@@ -5,7 +5,7 @@ from flask import Flask, request, render_template
 from config import *
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path="/pycourse/static")
 
 def examinate_func(f):
     failed = []
