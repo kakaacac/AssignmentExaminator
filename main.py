@@ -16,7 +16,7 @@ def examinate_func(f):
     return failed
 
 
-@app.route("/pycourse/assignment8", method=["GET", "POST"])
+@app.route("/pycourse/assignment8", methods=["GET", "POST"])
 def examinate_assignment8():
     if request.method == "GET":
         return render_template('assignment8.html')
