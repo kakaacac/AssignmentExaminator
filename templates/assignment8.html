@@ -1,5 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Assignment 8{% endblock %}
 {% block content %}
-<h1>TEST</h1>
+<div class="row h-100 justify-content-center align-items-center">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light"><h1>Assignment 8</h1></nav>
+    <form class="col-12" id="assignment8_form">
+        <div class="form-group">
+            <label for="name">Your name:</label>
+            <input type="text" class="form-control" id="name" placeholder="Your name" name="name" required>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="assignment8">Assignment:</label>
+            <input type="file" class="form-control-file" id="assignment8" name="assignment" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+<br><br><br>
+<div class="row" id="result"></div>
+{% endblock %}
+{% block footer %}
+<script>
+$("#assignment8_form").submit(function(e){
+    e.preventDefault();
+    var form_data = new FormData($("#assignment8_form")[0]);
+    console.log(form_data);
+    $.ajax({
+        url: "{{ url_for("examinate_assignment8") }}",
+        type: "POST",
+        data: form_data,
+        enctype: 'multipart/form-data',
+        processData: false,
+        cache: false,
+        contentType: false,
+        success: function(resp){$("#result").html(resp);}
+    });
+});
+</script>
 {% endblock %}

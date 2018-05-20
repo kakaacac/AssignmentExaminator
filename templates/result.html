@@ -1,0 +1,44 @@
+<div class="col-12">
+    <h3>Result:</h3>
+    {% if passed %}
+    <div class="alert alert-success" role="alert"><h4>Congratulations! You've passed all test cases!</h4></div>
+    {% else %}
+        {% for i, info in enumerate(result) %}
+            {% if info["status"] == status["passed"] %}
+                <div class="alert alert-success" role="alert">
+                    <h4>Question {{ i + 1 }} passed.</h4>
+                </div>
+            {% else %}
+                {% if info["status"] == status["not_found"] %}
+                <div class="alert alert-danger" role="alert">
+                    <h4>Question {{ i + 1 }} not found.</h4>
+                </div>
+                {% elif info["status"] == status["check_failed"] %}
+                <div class="alert alert-danger" role="alert">
+                    <h4>Question {{ i + 1 }} failed:</h4>
+                    <table class="errors">
+                        <tr><th>Function Call</th><th>Info</th></tr>
+                        {% for e in info["errors"] %}
+                        <tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% elif info["status"] == status["wrong_return"] %}
+                <div class="alert alert-danger" role="alert">
+                    <h4>Question {{ i + 1 }} failed:</h4>
+                    <table class="errors">
+                        <tr><th>Function Call</th><th>Expected Return</th><th>Your Return</th></tr>
+                        {% for e in info["errors"] %}
+                        <tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td><td>{{ e[2] }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h4>Question {{ i + 1 }} failed.</h4>
+                </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
