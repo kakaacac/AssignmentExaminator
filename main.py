@@ -100,6 +100,7 @@ def examinate_assignment8():
         filename = upload_file.filename
         upload_file.save(os.path.join(ASSIGNMENT_DIR, filename))
         assignment = import_module("assignment8.{}".format(filename).replace(".py", ""))
+        reload(assignment)
 
         passed = True
         result = []
