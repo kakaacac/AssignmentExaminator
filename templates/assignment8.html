@@ -25,7 +25,6 @@
 $("#assignment8_form").submit(function(e){
     e.preventDefault();
     var form_data = new FormData($("#assignment8_form")[0]);
-    console.log(form_data);
     $.ajax({
         url: "{{ url_for("examinate_assignment8") }}",
         type: "POST",

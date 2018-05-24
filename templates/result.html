@@ -1,43 +1,52 @@
 <div class="col-12">
     <h3>Result:</h3>
     {% if passed %}
-    <div class="alert alert-success" role="alert"><h4>Congratulations! You've passed all test cases!</h4></div>
+    <div class="alert alert-success" role="alert"><h5>Congratulations! You've passed all test cases!</h5></div>
     {% else %}
         {% for i, info in enumerate(result) %}
             {% if info["status"] == status["passed"] %}
                 <div class="alert alert-success" role="alert">
-                    <h4>Question {{ i + 1 }} passed.</h4>
+                    <h5>Question {{ i + 1 }} passed.</h5>
                 </div>
             {% else %}
+                <div class="alert alert-danger" role="alert">
                 {% if info["status"] == status["not_found"] %}
-                <div class="alert alert-danger" role="alert">
-                    <h4>Question {{ i + 1 }} not found.</h4>
-                </div>
+                    <h5>Question {{ i + 1 }} not found.</h5>
+                {% elif info["status"] == status["exception"] %}
+                    <h5>Question {{ i + 1 }} failed:</h5>
+                    <p>Calling <b>{{ info["func_call"] }}</b> thrown an <b>{{ info["exception"] }}: {{ info["msg"] }}</b></p>
                 {% elif info["status"] == status["check_failed"] %}
-                <div class="alert alert-danger" role="alert">
-                    <h4>Question {{ i + 1 }} failed:</h4>
+                    <h5>Question {{ i + 1 }} failed:</h5>
                     <table class="errors">
                         <tr><th>Function Call</th><th>Info</th></tr>
                         {% for e in info["errors"] %}
                         <tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td></tr>
                         {% endfor %}
+                        {% if "files" in info %}
+                            <tr><td>&nbsp;</td></tr>
+                            {% for param, files in info["files"].items() %}
+                            <tr><td colspan="2">Download files for "{{ param }}": {% for fn, url in files %}<a href="{{ url }}">{{ fn }}</a> {% endfor %}</td></tr>
+                            {% endfor %}
+                        {% endif %}
                     </table>
-                </div>
                 {% elif info["status"] == status["wrong_return"] %}
-                <div class="alert alert-danger" role="alert">
-                    <h4>Question {{ i + 1 }} failed:</h4>
+                    <h5>Question {{ i + 1 }} failed:</h5>
                     <table class="errors">
                         <tr><th>Function Call</th><th>Expected Return</th><th>Your Return</th></tr>
                         {% for e in info["errors"] %}
                         <tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td><td>{{ e[2] }}</td></tr>
                         {% endfor %}
+                        {% if "files" in info %}
+                            <tr><td>&nbsp;</td></tr>
+                            {% for param, files in info["files"].items() %}
+                            <tr><td colspan="3">Download files for "{{ param }}": {% for fn, url in files %}<a href="{{ url }}">{{ fn }}</a> {% endfor %}</td></tr>
+                            {% endfor %}
+                        {% endif %}
                     </table>
-                </div>
                 {% else %}
-                <div class="alert alert-danger" role="alert">
-                    <h4>Question {{ i + 1 }} failed.</h4>
-                </div>
+                    <h5>Question {{ i + 1 }} failed.</h5>
                 {% endif %}
+                </div>
             {% endif %}
         {% endfor %}
     {% endif %}
